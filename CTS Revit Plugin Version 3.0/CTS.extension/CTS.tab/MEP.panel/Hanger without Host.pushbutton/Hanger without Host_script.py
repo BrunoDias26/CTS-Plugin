@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 __title__ = "Hanger without Host"
+
 __doc__ = """How to use:
 
-- Select the elements you want to MOVE (Pipes or Fabrication Pipes).
-- Run this command.
-- Choose the alignment side (TOP, BOTTOM, LEFT, or RIGHT) relative to your screen.
-- Pick the REFERENCE element.
+- Run the command.
+- If hangers without host are found in the current view, they will be automatically isolated.
 
 Author: Bruno Dias
 """
-
 __author__ = "Bruno Dias"
 __min_revit_ver__ = 2023
 __max_revit_ver__ = 2026

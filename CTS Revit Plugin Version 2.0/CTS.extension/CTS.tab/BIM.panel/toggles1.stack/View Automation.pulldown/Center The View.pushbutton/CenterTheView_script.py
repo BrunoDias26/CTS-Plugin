@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 __title__ = "Center the View"
-__doc__ = """Version 1.0
-
-How to use:
+__doc__ = """How to use:
 
 - Open a Sheet View.
 - Run this command.
@@ -11,8 +9,8 @@ How to use:
 Author: Bruno Dias"""
 
 __author__ = "Bruno Dias"     #Description of the button displayed in Revit UI
-__min_revit_ver__= 2024
-__max_revit_ver__ = 2025
+__min_revit_ver__= 2023
+__max_revit_ver__ = 2026
 
 import os
 from Autodesk.Revit.DB import *
@@ -104,33 +102,14 @@ def check_viewport_title(viewport):
     vp_type = doc.GetElement(viewport.GetTypeId())
     title_param = vp_type.get_Parameter(BuiltInParameter.VIEWPORT_ATTR_LABEL_TAG).AsElementId()
 
-    if title_param.IntegerValue == -1:
+    if title_param == ElementId.InvalidElementId:
         return False
     else:
         return True
 
-# def label_line(viewport):
-
-#     view_name = doc.GetElement(viewport.ViewId).Name
-#     char_count = len(view_name)
-#     char_width = 0.018
-#     approx_width = char_count * char_width
-
-#     return approx_width
-
-#     # Bounding box da lable
-#     vp_lable = viewport.GetLabelOutline()
-#     vp_lable_min = vp_lable.MinimumPoint
-#     vp_lable_max = vp_lable.MaximumPoint
-
-#     # Largura da lable viewport
-#     vp_lable_width = vp_lable_max.X - vp_lable_min.X 
-
-#     return vp_lable_width
-
 
 ###### Main Execution ########
-
+import traceback
 try:
 
 # Info Viewport
@@ -156,10 +135,6 @@ try:
     # posiciona a view no meio da viewport
     view_viewport.Location.Move(offset)
 
-    # # #corrige o comprimento da lableline
-    # b = label_line(view_viewport)
-    # view_viewport.LabelLineLength = b
-
     if check_viewport_title(view_viewport):
         # posiciona a lable embaixo da view
         new_label = label_pos(view_viewport)
@@ -167,9 +142,11 @@ try:
 
     t.Commit()
 
-except:
-    forms.alert("Execution error: \n"
-    "- Check if the active view is a SheetView;\n"
-    "- Check if there is more than one Viewport on the sheet.", title="Center the View")
+except Exception as ex:
+    forms.alert(
+        "Execution error:\n\n{}".format(ex),
+        title="Center the View"
+    )
+
 
 

@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 __title__ = "Views To Sheet"
-__doc__ = """Version 1.0
-
-How to use:
+__doc__ = """How to use:
 
 - Run this tool. 
 - Select the views you want to place.
@@ -11,8 +9,8 @@ How to use:
 Author: Bruno Dias"""
 
 __author__ = "Bruno Dias"     #Description of the button displayed in Revit UI
-__min_revit_ver__= 2024
-__max_revit_ver__ = 2025
+__min_revit_ver__= 2023
+__max_revit_ver__ = 2026
 
 import random
 import string
@@ -122,5 +120,5 @@ if views:
         t.Commit()
 
 
-    else:
-        forms.alert("User must select a Title Block.")
+    # else:
+    #     forms.alert("User must select a Title Block.")

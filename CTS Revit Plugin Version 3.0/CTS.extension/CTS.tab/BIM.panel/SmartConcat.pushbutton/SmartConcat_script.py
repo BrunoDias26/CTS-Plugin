@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-__title__ = "SmartConcat"
+__title__ = "Smart Concat"
 __doc__ = """How to use:
 
 - Click the icon and follow the steps to concatenate parameters.
@@ -27,7 +27,6 @@ CATEGORIES = {
     "Pipes": BuiltInCategory.OST_PipeCurves,
     "Mechanical Equipment": BuiltInCategory.OST_MechanicalEquipment,
     "MEP Fabrication Pipework": BuiltInCategory.OST_FabricationPipework,
-
 }
 
 # ----------------------------------------------------
@@ -41,12 +40,10 @@ def get_all_parameters_from_category(bic, elems=None):
     params = {}
 
     for e in elems:
-        # parâmetros de instância
         for p in e.Parameters:
             if p and p.Definition:
                 params[p.Definition.Name] = p.Id
 
-        # parâmetros de tipo
         etype = doc.GetElement(e.GetTypeId())
         if etype:
             for p in etype.Parameters:
@@ -131,7 +128,8 @@ def show_main_window():
 
 
 def show_params_window(common_params, editable_params, qtd):
-    items = [Label("Select parameters and optional prefix/suffix:")]
+    # Reduzi o texto dos Labels para economizar espaço vertical
+    items = [Label("prefixes / Select parameters / suffixes:")]
 
     names_common = list(common_params.keys())
     names_editable = list(editable_params.keys())
@@ -139,25 +137,20 @@ def show_params_window(common_params, editable_params, qtd):
     for i in range(qtd):
         idx = i + 1
 
-        items.append(Label("Parameter {}".format(idx)))
-        items.append(ComboBox("p{}".format(idx), names_common))
-
-        # Prefix
-        items.append(Label("Prefix {}:".format(idx)))
+        items.append(Label("Prefix | P{} | Suffix".format(idx)))
         items.append(TextBox("pref{}".format(idx), Text=""))
-
-        # Suffix
-        items.append(Label("Suffix {}:".format(idx)))
+        items.append(ComboBox("p{}".format(idx), names_common))
         items.append(TextBox("suf{}".format(idx), Text=""))
-
         items.append(Separator())
 
     items.append(Label("Parameter to set:"))
     items.append(ComboBox("dest", names_editable))
     items.append(Separator())
+
     items.append(Button("Apply"))
 
-    return FlexForm("Select Parameters", items)
+    # AJUSTE: Definindo altura fixa e permitindo redimensionamento para não sumir o botão
+    return FlexForm("Select Parameters", items, height=700, can_resize=True)
 
 # ----------------------------------------------------
 # EXECUÇÃO
@@ -171,7 +164,6 @@ bic = CATEGORIES[res1["cat"]]
 qtd = int(res1["qtd"])
 scope = res1.get("scope", "Active view")
 
-# Buscar elementos da categoria com base no scope escolhido
 if scope == "Active view":
     elems = FilteredElementCollector(doc, active_view.Id).OfCategory(bic)\
         .WhereElementIsNotElementType().ToElements()
@@ -183,7 +175,6 @@ if not elems:
     forms.alert("The selected category has no elements in the chosen scope ({})".format(scope))
     sys.exit()
 
-# Buscar parâmetros utilizando os elementos filtrados (escopo)
 all_params = get_all_parameters_from_category(bic, elems=elems)
 sample = get_sample_element(bic, elems=elems)
 editable_params = get_editable_string_parameters(sample)

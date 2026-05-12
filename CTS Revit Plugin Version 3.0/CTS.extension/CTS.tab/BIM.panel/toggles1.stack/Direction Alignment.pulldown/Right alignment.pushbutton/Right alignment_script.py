@@ -156,14 +156,6 @@ def align_tags(reference_tag, tag_list):
         # 2. Mover a Cabeça da Tag (usando .Add para ser mais limpo)
         tag.TagHeadPosition = current_pos.Add(delta)
 
-        # 3. Ajustar o Elbow (cotovelo) de todas as referências
-        if tag.HasLeader:
-            refs = tag.GetTaggedReferences()
-            for r in refs:
-                if tag.HasLeaderElbow(r):
-                    old_elbow = tag.GetLeaderElbow(r)
-                    # Move o cotovelo a mesma distância horizontal que a tag
-                    tag.SetLeaderElbow(r, old_elbow.Add(delta))
 
     t.Commit()
 

@@ -134,15 +134,6 @@ def align_tags(reference_tag, tag_list, view):
         # 2. Mover a Cabeça da Tag
         tag.TagHeadPosition = current_pos.Add(delta)
 
-        # 3. Ajustar o Cotovelo (Elbow)
-        # Em IndependentTags, usamos GetTaggedReferences para lidar com os líderes
-        if tag.HasLeader:
-            refs = tag.GetTaggedReferences()
-            for r in refs:
-                # Verifica se a tag permite cotovelo para esta referência
-                if tag.HasLeaderElbow(r):
-                    old_elbow = tag.GetLeaderElbow(r)
-                    tag.SetLeaderElbow(r, old_elbow.Add(delta))
 
     t.Commit()
     

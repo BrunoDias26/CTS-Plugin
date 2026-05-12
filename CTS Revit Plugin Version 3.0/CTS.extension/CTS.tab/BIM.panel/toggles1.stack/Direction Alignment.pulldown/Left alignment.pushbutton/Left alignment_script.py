@@ -173,18 +173,6 @@ def align_tags(reference_tag, tag_list, view, spacing=None):
         # 2. Mover a Cabeça da Tag
         tag.TagHeadPosition = current_pos.Add(delta)
 
-        # 3. Mover os cotovelos (elbows)
-        if tag.HasLeader:
-            # Pega todas as referências (setas) da tag
-            refs = tag.GetTaggedReferences()
-            for r in refs:
-                # Verifica se esta seta específica tem um cotovelo (elbow)
-                if tag.HasLeaderElbow(r):
-                    old_elbow = tag.GetLeaderElbow(r)
-                    
-                    # Aplica o mesmo deslocamento horizontal no cotovelo
-                    new_elbow = old_elbow.Add(delta)
-                    tag.SetLeaderElbow(r, new_elbow)
 
     t.Commit()
 

@@ -134,7 +134,15 @@ def align_tags(reference_tag, tag_list, view):
         # 2. Move a cabeça da Tag usando o Delta
         tag.TagHeadPosition = current_pos.Add(delta)
 
-
+        # 3. Ajustar o Cotovelo (Elbow) - Condicional LeaderEndCondition.Free
+        if tag.HasLeader and tag.LeaderEndCondition == LeaderEndCondition.Free:
+            refs = tag.GetTaggedReferences()
+            for r in refs:
+                # Verifica se a tag permite cotovelo para esta referência
+                if tag.HasLeaderElbow(r):
+                    old_elbow = tag.GetLeaderElbow(r)
+                    tag.SetLeaderElbow(r, old_elbow.Add(delta))
+                    
     t.Commit()
 
 ############### Main ####################

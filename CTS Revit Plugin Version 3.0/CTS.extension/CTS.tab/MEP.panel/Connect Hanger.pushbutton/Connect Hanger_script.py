@@ -53,38 +53,7 @@ if hanger.ServiceId != pipe.ServiceId:
     forms.alert("Different Fabrication Services detected.", title="Service Mismatch")
     script.exit()
 
-# 6. Ajuste de Size com Verificação de "Pós-Set"
-pipe_size_raw = pipe.get_Parameter(BuiltInParameter.RBS_REFERENCE_OVERALLSIZE).AsString()
-success_size = False
-
-t_size = Transaction(doc, "Adjust Hanger Size")
-t_size.Start()
-try:
-    size_param = hanger.get_Parameter(BuiltInParameter.FABRICATION_PRODUCT_ENTRY)
-    if size_param and pipe_size_raw:
-        # Tenta aplicar o tamanho
-        size_param.Set(pipe_size_raw)
-        
-        # VERIFICAÇÃO CRUCIAL: O Revit aplicou exatamente o que pedimos ou arredondou?
-        # Se o valor após o Set for diferente do que pedimos, significa que não há match real
-        if size_param.AsString() == pipe_size_raw:
-            success_size = True
-        else:
-            # Tenta uma última vez sem aspas, caso o banco de dados use formato limpo
-            clean_size = pipe_size_raw.replace('"', '').strip()
-            size_param.Set(clean_size)
-            if size_param.AsString() == clean_size:
-                success_size = True
-    
-    t_size.Commit()
-except:
-    t_size.RollBack()
-
-if not success_size:
-    forms.alert("Size Mismatch: The Hanger does not have a valid entry for {}. Connection aborted to avoid incorrect sizing.".format(pipe_size_raw), title="Incompatible Size")
-    script.exit()
-
-# 7. Geometria e Conexão
+# 6. Geometria e Conexão (TRECHO MODIFICADO - CONTROLE DE SIZE ENTREGUE AO REVIT)
 t_host = Transaction(doc, "Connect Hanger to Pipe")
 t_host.Start()
 try:
@@ -102,24 +71,30 @@ try:
     hosted_info = hanger.GetHostedInfo()
     if hosted_info:
         pipe_connectors = pipe.ConnectorManager.Connectors
+        
+        # Encontra o conector no início da curva (onde parameter = 0)
+        start_point = pipe_curve.GetEndPoint(0)
         ref_conn = None
+        
         for c in pipe_connectors:
-            ref_conn = c
-            break
-            
+            if c.Origin.DistanceTo(start_point) < 0.01:
+                ref_conn = c
+                break
+        
+        if not ref_conn:
+            for c in pipe_connectors:
+                ref_conn = c
+                break
+                
         if ref_conn:
-            dist = ref_conn.Origin.DistanceTo(target_xyz)
+            dist = projection.Parameter
+            
+            # O PlaceOnHost agora força o Hanger a recalcular seu diâmetro baseado no OD + Insulation do Host
             hosted_info.PlaceOnHost(pipe.Id, ref_conn, dist)
+            print("SUCCESS: Connected and automatically sized by Revit!")
     
     t_host.Commit()
-    #print("SUCCESS: Connected to Pipe ID {}".format(pipe.Id))
 
 except Exception as ex:
     t_host.RollBack()
     print("Connection Error: {}".format(ex))
-
-
-
-
-
-    a = FilteredElementCollector()

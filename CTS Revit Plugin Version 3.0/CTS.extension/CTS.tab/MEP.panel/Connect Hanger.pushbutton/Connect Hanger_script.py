@@ -91,7 +91,7 @@ try:
             
             # O PlaceOnHost agora força o Hanger a recalcular seu diâmetro baseado no OD + Insulation do Host
             hosted_info.PlaceOnHost(pipe.Id, ref_conn, dist)
-            print("SUCCESS: Connected and automatically sized by Revit!")
+            # print("SUCCESS: Connected and automatically sized by Revit!")
     
     t_host.Commit()
 

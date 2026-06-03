@@ -87,10 +87,43 @@ try:
                 break
                 
         if ref_conn:
-            dist = projection.Parameter
-            
-            # O PlaceOnHost agora força o Hanger a recalcular seu diâmetro baseado no OD + Insulation do Host
-            hosted_info.PlaceOnHost(pipe.Id, ref_conn, dist)
+            # Determine a safe distance along the host to place the hanger.
+            # Try to compute the linear distance from the reference connector to
+            # the projected point and clamp it to the curve length to avoid
+            # "distance out of range" errors. Fall back to projection.Parameter
+            # if necessary and finally try placing at the connector origin.
+            try:
+                dist = ref_conn.Origin.DistanceTo(target_xyz)
+                curve_length = getattr(pipe_curve, 'Length', None)
+                if curve_length is None:
+                    dist = projection.Parameter
+                else:
+                    if dist < 0.0:
+                        dist = 0.0
+                    # avoid exact end-of-curve value which can be considered out-of-range
+                    if dist >= curve_length:
+                        dist = curve_length - 1e-6
+            except Exception:
+                dist = projection.Parameter
+                try:
+                    curve_length = getattr(pipe_curve, 'Length', None)
+                    if curve_length is not None:
+                        if dist < 0.0:
+                            dist = 0.0
+                        if dist >= curve_length:
+                            dist = curve_length - 1e-6
+                except Exception:
+                    pass
+
+            try:
+                hosted_info.PlaceOnHost(pipe.Id, ref_conn, dist)
+            except Exception:
+                # Last resort: try placing at the connector origin (distance 0.0)
+                try:
+                    hosted_info.PlaceOnHost(pipe.Id, ref_conn, 0.0)
+                except Exception:
+                    # re-raise to be handled by outer transaction exception
+                    raise
             # print("SUCCESS: Connected and automatically sized by Revit!")
     
     t_host.Commit()

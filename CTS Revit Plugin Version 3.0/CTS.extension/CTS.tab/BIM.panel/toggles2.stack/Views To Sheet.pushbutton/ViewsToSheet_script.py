@@ -13,9 +13,7 @@ __author__ = "Bruno Dias"
 __min_revit_ver__= 2023
 __max_revit_ver__ = 2025
 
-import random
-import string
-import os
+import re
 from Autodesk.Revit.DB import *
 from Autodesk.Revit.UI import *
 from pyrevit import forms, revit, script
@@ -44,14 +42,32 @@ def title_block_middle(tb):
     else:
         return XYZ(0,0,0)
 
+def normalize_scope_box(name):
+    # Standardize Scope Box names: uppercase and drop a leading "AREA"
+    # "Area A" / "area a" / "AreaB" / "Area-C" / "D"  ->  "A" / "B" / "C" / "D"
+    if not name:
+        return name
+
+    clean = name.strip().upper()
+
+    # Remove the leading "AREA" plus any separator that follows it
+    stripped = re.sub(r'^AREA[\s_\-\.]*', '', clean)
+
+    # If nothing is left (Scope Box literally named "Area"), keep the original name
+    if not stripped:
+        return clean
+
+    # Collapse redundant inner whitespace
+    return re.sub(r'\s+', ' ', stripped)
+
 def sheetnumber(view, existing_list, prefix_user):
     # Pattern: PREFIX + SCOPEBOX NAME
     try:
         # Get Scope Box Element
         sb_id = view.get_Parameter(BuiltInParameter.VIEWER_VOLUME_OF_INTEREST_CROP).AsElementId()
-        
+
         if sb_id != ElementId.InvalidElementId:
-            view_scope_box = doc.GetElement(sb_id).Name
+            view_scope_box = normalize_scope_box(doc.GetElement(sb_id).Name)
         else:
             view_scope_box = "General"
 

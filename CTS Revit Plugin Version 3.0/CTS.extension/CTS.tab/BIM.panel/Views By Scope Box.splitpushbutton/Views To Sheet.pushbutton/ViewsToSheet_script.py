@@ -11,7 +11,7 @@ Author: Bruno Dias"""
 
 __author__ = "Bruno Dias" 
 __min_revit_ver__= 2023
-__max_revit_ver__ = 2025
+__max_revit_ver__ = 2026
 
 import re
 from Autodesk.Revit.DB import *
@@ -113,6 +113,17 @@ if views:
             get_all_sheets = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Sheets).WhereElementIsNotElementType().ToElements()
             existing_sheets = [sheet.SheetNumber for sheet in get_all_sheets]
 
+            # Viewport.Name has a known IronPython quirk (raises AttributeError), so
+            # the type name must be read through the Element.Name property descriptor
+            def get_type_name(element_type):
+                return Element.Name.__get__(element_type)
+
+            # Cache for the "CTS" viewport type id, resolved once from the first
+            # viewport we create (via GetValidTypes, the reliable way to list the
+            # types actually assignable to a Viewport)
+            cts_viewport_type_id = None
+            cts_viewport_search_done = False
+
             ##### Transaction ########
             t = Transaction(doc, "Create Sheets from Views")
             t.Start()
@@ -123,16 +134,27 @@ if views:
                 # Create sheet and set identity
                 new_sheet = ViewSheet.Create(doc, titleblock)
                 new_sheet.Name = view_name
-                
+
                 # Apply the auto-generated Sheet Number
                 new_sheet.SheetNumber = sheetnumber(view, existing_sheets, prefix_input)
-                
+
                 # Get Title Block instance on the new sheet to find its center
                 tb_instance = FilteredElementCollector(doc, new_sheet.Id).OfCategory(BuiltInCategory.OST_TitleBlocks).FirstElement()
 
                 if tb_instance:
                     tb_center = title_block_middle(tb_instance)
-                    Viewport.Create(doc, new_sheet.Id, view.Id, tb_center)
+                    new_viewport = Viewport.Create(doc, new_sheet.Id, view.Id, tb_center)
+
+                    if not cts_viewport_search_done:
+                        for type_id in new_viewport.GetValidTypes():
+                            candidate_name = get_type_name(doc.GetElement(type_id))
+                            if "CTS" in candidate_name.upper():
+                                cts_viewport_type_id = type_id
+                                break
+                        cts_viewport_search_done = True
+
+                    if cts_viewport_type_id:
+                        new_viewport.ChangeTypeId(cts_viewport_type_id)
 
             t.Commit()
             # forms.alert("Sheets created successfully!", title="Success")

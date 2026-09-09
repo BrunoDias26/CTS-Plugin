@@ -109,3 +109,5 @@ with revit.Transaction("Rotate Fabrication Parts 90° CW"):
                 ElementTransformUtils.RotateElement(doc, elem.Id, axis, angle)
             except Exception:
                 pass
+
+print("Teste")

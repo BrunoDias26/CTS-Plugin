@@ -6,9 +6,10 @@ __doc__ = """How to use:
 - Select 1 Fabrication Hanger and 1 Fabrication Pipe (Straight).
 - Run the script command.
 - The Hanger will be automatically connected and hosted to the Pipe.
-
-Author: Bruno Dias
 """
+
+__min_revit_ver__ = 2023
+__max_revit_ver__ = 2026
 
 from Autodesk.Revit.DB import *
 from pyrevit import revit, forms, script

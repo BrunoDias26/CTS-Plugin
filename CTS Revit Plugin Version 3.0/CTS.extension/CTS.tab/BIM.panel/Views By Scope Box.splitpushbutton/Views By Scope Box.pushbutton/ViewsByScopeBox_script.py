@@ -6,8 +6,10 @@ __doc__ = """How to use:
 - Select from the list a View to be duplicated (Floor Plan).
 - Choose the target Scope Boxes.
 - Define a prefix for the sheets. The final name will be: [Prefix] + [Scope Box Name].
+"""
 
-Author: Bruno Dias"""
+__min_revit_ver__ = 2023
+__max_revit_ver__ = 2026
 
 from Autodesk.Revit.DB import *
 from pyrevit import forms, revit

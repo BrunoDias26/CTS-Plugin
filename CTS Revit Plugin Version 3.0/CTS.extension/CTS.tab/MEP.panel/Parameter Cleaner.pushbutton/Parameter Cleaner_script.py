@@ -5,8 +5,6 @@ __doc__ = """How to use:
 - Select the elements you want to reset.
 - Run the command.
 - All visible shared and project text parameters are cleared.
-
-Author: Pedro Oliveira
 """
 
 __author__ = "Pedro Oliveira"

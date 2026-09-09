@@ -5,8 +5,6 @@ __doc__ = """How to use:
 - Select all desired MEP Fabrication Parts.
 - Run the command.
 - All selected Fabrication Parts will be flipped.
-
-Author: Pedro Oliveira
 """
 
 __author__ = "Pedro Oliveira"

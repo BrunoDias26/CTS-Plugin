@@ -5,8 +5,6 @@ __doc__ = """How to use:
 
 - Run the command.
 - If hangers without host are found in the current view, they will be automatically isolated.
-
-Author: Bruno Dias
 """
 __author__ = "Bruno Dias"
 __min_revit_ver__ = 2023

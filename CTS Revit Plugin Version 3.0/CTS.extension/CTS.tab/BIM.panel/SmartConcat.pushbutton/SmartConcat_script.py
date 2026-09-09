@@ -3,8 +3,6 @@ __title__ = "Smart Concat"
 __doc__ = """How to use:
 
 - Click the icon and follow the steps to concatenate parameters.
-
-Author: Bruno Dias
 """
 
 __author__ = "Bruno Dias"

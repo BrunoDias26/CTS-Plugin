@@ -7,8 +7,6 @@ __doc__ = """How to use:
 - Run the command.
 - Pick the categories to analyse.
 - Elements sharing Category + Family and occupying the same space are isolated in the view and listed in the output window.
-
-Author: Pedro Oliveira
 """
 __author__ = "Pedro Oliveira"
 __min_revit_ver__ = 2023

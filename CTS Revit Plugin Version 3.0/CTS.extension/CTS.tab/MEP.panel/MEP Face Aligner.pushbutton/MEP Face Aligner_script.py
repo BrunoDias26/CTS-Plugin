@@ -6,8 +6,6 @@ __doc__ = """How to use:
 - Run this command.
 - Choose the alignment side (TOP, BOTTOM, LEFT, or RIGHT) relative to your screen.
 - Pick the REFERENCE element.
-
-Author: Bruno Dias
 """
 
 __author__ = "Bruno Dias"

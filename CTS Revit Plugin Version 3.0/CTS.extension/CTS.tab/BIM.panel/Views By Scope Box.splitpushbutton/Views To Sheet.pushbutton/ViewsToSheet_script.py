@@ -6,8 +6,7 @@ __doc__ = """How to use:
 - Select the views you want to place.
 - Enter the Sheet Number prefix (e.g., ARQ).
 - Select the Title Block to use.
-
-Author: Bruno Dias"""
+"""
 
 __author__ = "Bruno Dias" 
 __min_revit_ver__= 2023

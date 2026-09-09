@@ -5,6 +5,9 @@ __doc__ = """How to use:
 
 - Click the button to convert all visible Grids from 3D to 2D extents."""
 
+__min_revit_ver__ = 2023
+__max_revit_ver__ = 2026
+
 from Autodesk.Revit.DB import *
 from pyrevit import revit, forms
 

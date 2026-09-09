@@ -5,8 +5,7 @@ __doc__ = """How to use:
 - Open a Sheet View.
 - Run this command.
 - The script will center the View on the sheet and align the title below.
-
-Author: Bruno Dias"""
+"""
 
 __author__ = "Bruno Dias"     #Description of the button displayed in Revit UI
 __min_revit_ver__= 2023

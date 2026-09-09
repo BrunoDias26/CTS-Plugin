@@ -7,9 +7,10 @@ __doc__ = """How to use:
 - Run the command.
 - All selected Fabrication Parts will be rotated 90° clockwise.
 - Pinned Fabrication Parts are skipped automatically.
-
-Author: Pedro Oliveira
 """
+
+__min_revit_ver__ = 2023
+__max_revit_ver__ = 2026
 
 import math
 from pyrevit import revit, forms

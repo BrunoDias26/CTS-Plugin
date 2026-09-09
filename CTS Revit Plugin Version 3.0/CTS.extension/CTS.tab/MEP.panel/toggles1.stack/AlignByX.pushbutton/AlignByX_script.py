@@ -5,8 +5,6 @@ __doc__ = """How to use:
 - Select ONE element and run the command.
 - Pick the reference element.
 - The element will be aligned to the reference along MODEL X axis.
-
-Author: Bruno Dias
 """
 
 __author__ = "Bruno Dias"

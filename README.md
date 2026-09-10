@@ -23,7 +23,7 @@ Run the installer (it's recommended to close Revit during installation). After i
 
 ### 2. Download the CTS Plugin (latest version)
 
-Download the latest CTS Plugin package from the [Releases page](https://github.com/cts-bim/CTS-Revit-Plugin/releases/latest). Every version is published there, with its release notes and the corresponding `.zip`.
+Download the latest CTS Plugin package from the [Releases page](https://github.com/cts-bim/CTS-Revit-Plugin/releases). Every version is published there, with its release notes and the corresponding `.zip`.
 
 > Download the `.zip` named after the version (e.g., `CTS-Revit-Plugin-Version-4.0.zip`), not the auto-generated **Source code** files.
 

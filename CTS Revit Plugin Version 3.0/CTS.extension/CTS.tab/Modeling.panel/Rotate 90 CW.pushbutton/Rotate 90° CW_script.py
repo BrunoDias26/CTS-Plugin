@@ -69,6 +69,9 @@ if warnings:
 # -90 degrees for clockwise rotation
 angle = -math.radians(90)
 
+count = 0
+failed = 0
+
 with revit.Transaction("Rotate Fabrication Parts 90° CW"):
     for elem in fab_parts:
         axis = None
@@ -107,7 +110,19 @@ with revit.Transaction("Rotate Fabrication Parts 90° CW"):
         if axis:
             try:
                 ElementTransformUtils.RotateElement(doc, elem.Id, axis, angle)
+                count += 1
             except Exception:
-                pass
+                failed += 1
+        else:
+            failed += 1
 
-print("Teste")
+# Report the result
+if failed:
+    forms.alert(
+        "{0} element(s) successfully rotated!\n{1} element(s) could not be rotated.".format(count, failed),
+        title="Rotate 90° CW",
+        warn_icon=True
+    )
+else:
+    forms.alert("{0} element(s) successfully rotated!".format(count), title="Success")
+

@@ -2,7 +2,7 @@
 
 [pyRevit](https://github.com/pyrevitlabs/pyRevit) extension developed by CTS BIM with productivity tools for BIM and MEP modeling in Autodesk Revit.
 
-The extension adds a **CTS** tab to the Revit ribbon, organized into three panels: **BIM**, **MEP**, and **Support**.
+The extension adds a **CTS** tab to the Revit ribbon, organized into five panels: **Annotation**, **Hanger**, **Modeling**, **QC**, and **Support**.
 
 ## Compatibility
 
@@ -23,9 +23,9 @@ Run the installer (it's recommended to close Revit during installation). After i
 
 ### 2. Download the CTS Plugin (latest version)
 
-Download the latest CTS Plugin package from the [versions channel on ClickUp](https://app.clickup.com/9014580481/v/o/f/90147202119?pr=90142481001).
+Download the latest CTS Plugin package from the [Releases page](https://github.com/cts-bim/CTS-Revit-Plugin/releases/latest). Every version is published there, with its release notes and the corresponding `.zip`.
 
-![CTS Plugin versions list on ClickUp](docs/install/02-cts-plugin-download.png)
+> Download the `.zip` named after the version (e.g., `CTS-Revit-Plugin-Version-4.0.zip`), not the auto-generated **Source code** files.
 
 The plugin is distributed as a `.zip` file and must be extracted before use. After extracting, move the entire plugin folder (e.g., `CTS Revit Plugin Version X.0`) to:
 
@@ -63,33 +63,49 @@ When a new version is released, repeat steps 2 and 3: download the latest versio
 
 ## Tools
 
-### BIM Panel
+### Annotation Panel
 
 | Tool | Description |
 |---|---|
 | **Smart Concat** | Concatenates values from multiple parameters of the selected elements (Pipe Accessories, Fabrication Hangers, Pipes, Mechanical Equipment, etc.) into a single parameter, via a guided form. |
-| **Views By Scope Box** | Duplicates a selected base view once per selected Scope Box, naming each new view with a user-defined prefix + Scope Box name. |
-| **Views To Sheet** | Creates sheets for the selected views, auto-numbering them with a given prefix, applying the chosen title block, and centering the view on the sheet. |
+| **Views By Scope Box** | Duplicates a selected Floor Plan once per selected Scope Box, naming each new view with a user-defined prefix + Scope Box name. |
 | **Center The View** | Centers the viewport on the active sheet and aligns the viewport title directly below it. |
 | **Grids 3D to 2D** | Converts all grids visible in the active view from 3D to 2D (view-specific) extents in one click. |
+| **Views To Sheet** | Creates sheets for the selected views, auto-numbering them with a given prefix, applying the chosen title block, and centering the view on the sheet. |
 
-### MEP Panel
+> **Views By Scope Box** is a split button — *Center The View*, *Grids 3D to 2D*, and *Views To Sheet* are grouped under it.
+
+### Hanger Panel
 
 | Tool | Description |
 |---|---|
-| **Connect Hanger** | Automatically connects/hosts a selected Fabrication Hanger onto a selected straight Fabrication pipe. |
-| **Flip Elements** | Flips the selected MEP Fabrication Parts, skipping pinned elements or elements that aren't Fabrication Parts. |
+| **Rod Length Adjuster** | Adjusts the rod length of the selected MEP Fabrication Hangers by an imperial value typed by the user — positive to lengthen (`1' 6"`, `+6"`), negative to shorten (`-1' 10 5/8"`, `-6"`). Elements from other categories are skipped and reported in the final summary. |
 | **Hanger without Host** | Finds Fabrication Hangers without a host in the project and isolates them in the active view for review. |
+| **Connect Hanger** | Automatically connects/hosts a selected Fabrication Hanger onto a selected straight Fabrication pipe. |
+
+> **Rod Length Adjuster** is a split button — *Hanger without Host* and *Connect Hanger* are grouped under it.
+
+### Modeling Panel
+
+| Tool | Description |
+|---|---|
+| **Flip Elements** | Flips the selected MEP Fabrication Parts, skipping pinned elements or elements that aren't Fabrication Parts. |
 | **MEP Face Aligner** | Moves the selected pipes (native or Fabrication) to align a side (top/bottom/left/right, screen-relative) against a chosen reference element's face. |
-| **Parameter Cleaner** | Clears all visible text-type instance parameters (shared/project), plus Mark and Comments, on the selected elements. |
-| **Rotate 90°-CW** | Rotates the selected MEP Fabrication Parts 90° clockwise, automatically skipping pinned elements. |
+| **Rotate 90° CW** | Rotates the selected MEP Fabrication Parts 90° clockwise, automatically skipping pinned elements. |
 | **Align By X / Y / Z** | Aligns a selected element to a reference element along the model's X, Y, or Z axis, using connector geometry. |
+
+### QC Panel
+
+| Tool | Description |
+|---|---|
+| **Duplicate Finder** | Checks the active view for overlapping duplicates: elements sharing Category + Family and occupying the same space are isolated in the view and listed in the output window. The categories to analyse are picked when the command runs (Fabrication Pipework, Fabrication Hangers, Pipe Accessories, Mechanical Equipment, and Generic Models). |
+| **Parameter Cleaner** | Clears all visible text-type instance parameters (shared/project), plus Mark and Comments, on the selected elements. |
 
 ### Support Panel
 
 | Tool | Description |
 |---|---|
-| **Update** | Direct link to the team's task/update board (ClickUp), used to report bugs and request new features. |
+| **Update** | Direct link to the [CTS BIM repositories on GitHub](https://github.com/orgs/cts-bim/repositories), where new versions are published and issues can be reported. |
 
 ## Authors
 
